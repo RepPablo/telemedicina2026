@@ -1,0 +1,392 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf8">
+    <title>Aplicación Gestor</title>
+    <style>
+        :root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.6;
+    padding: 40px 20px;
+}
+
+h1 {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: #0f172a;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #334155;
+}
+
+.seccion {
+    max-width: 900px;
+    margin: 0 auto 20px auto;
+    background: var(--bg-card);
+    padding: 32px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease;
+}
+
+.activa {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+input, select {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    display: block;
+    margin-top: 5px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+td button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+td button:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+th {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #fff;
+    font-size: 0.9rem;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.boton-derecha {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #475569;
+    margin-bottom: 4px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+    </style> 
+</head>
+
+<body>
+
+    <h1>Gestor</h1>
+
+    <div id="acceso" class="seccion" style="display: block;">
+        <h2>Acceso</h2>
+        <div>Usuario: <input id="usuario" /></div> 
+        <div>Contraseña: <input id="contraseña" type="password" /></div>
+        <button onclick="login()">Entrar</button>
+        <button onclick="cambiarSeccion('registro')">Registrarse</button>
+    </div>
+
+    <div id="registro" class="seccion" style="display: none;">
+        <h2>Datos Gestor</h2>
+        <div>Nombre: <input id="reg_nombre" /></div>
+        <div>Apellidos: <input id="reg_apellidos" /></div>
+        <div>Login: <input id="reg_usuario" /></div>
+        <div>Contraseña: <input id="reg_contraseña" type="password" /></div>
+        <button onclick="registrarUsuario()">Guardar</button>
+        <button onclick="cambiarSeccion('acceso')">Cancelar</button>
+    </div>
+
+    <div id="home" class="seccion" style="display: none;">
+        <h2>Inicio</h2>
+        <p id="bienvenida">
+            <span id="texto_bienvenida">Cargando datos...</span>
+            <button onclick="editarDatos()">Editar mis datos</button>
+        </p>
+
+        <h3><strong>Ministerio de Sanidad</strong></h3>
+        <p>Área médica del gestor: <span id="area_gestor">-</span></p>
+        <button onclick="enviarReservasMinisterio()">Enviar reservas al Ministerio</button>
+        <button onclick="cargarRanking()">Actualizar ranking</button>
+
+        <h3><strong>Ranking de reservas por área médica</strong></h3>
+        <table id="tabla_ranking" border="1" cellpadding="6">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Área Médica</th>
+                    <th>Reservas Totales</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_ranking"></tbody>
+        </table>
+
+        <h3><strong>Formulario areas de salud</strong></h3>
+        <span id="formulario_area">Introduza los datos</span>
+        <div>Código postal <input id="codigo_postal" /></div>
+        <div>Nombre <input id="area_nombre" /></div>
+        <button onclick="registrarAreaSalud()">Crear área de salud</button>
+
+
+        <h3><strong>Búsqueda de recursos</strong></h3>
+        <label for="home_categoria">Categoría: </label>
+        <select id="home_categoria">
+            <option value="0">Todas</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <label for="home_modelo">Modelo: </label>
+        <select id="home_modelo">
+            <option value="0">Todos</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <label for="home_ubicacion">Ubicación: </label>
+        <select id="home_ubicacion">
+            <option value="0">Todas</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <label for="home_estado">Estado: </label>
+        <select id="home_estado">
+            <option value="-1">Todos</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <button onclick="mostrarRecursos()">Buscar</button>
+        <h3><strong>Recursos</strong></h3>
+        <table border="1" cellpadding="6">
+            <thead>
+                <tr>
+                    <th>Nº Serie</th>
+                    <th>Categoría</th>
+                    <th>Modelo</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <!-- tbody vacío: se rellena al pulsar Buscar -->
+            <tbody id="tbody_recursos">
+            </tbody>
+        </table>
+        <button onclick="cambiarSeccion('añadirRecurso')">Añadir recurso</button>
+        <h3 style="margin-top: 24px;"><strong>Avisos</strong></h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Origen</th>
+                    <th>Texto</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_avisos"></tbody>
+        </table>
+        <div align="right">
+            <button onclick="salir()">Salir</button>
+        </div>    
+    </div>
+
+    <div id="editarDatos" class="seccion" style="display: none;">
+        <h2>Datos Gestor</h2>
+        <div>Nombre: <input id="mod_nombre" /></div>
+        <div>Apellidos: <input id="mod_apellidos" /></div>
+        <div>Login: <input id="mod_usuario" /></div>
+        <div>Contraseña: <input id="mod_contraseña" type="password" /></div>
+        <!-- Corregido: antes llamaba a cambiarSeccion dentro del onclick -->
+        <button onclick="modificarUsuario()">Guardar</button>
+        <button onclick="cambiarSeccion('acceso')">Cancelar</button>
+    </div>
+
+    <div id="añadirRecurso" class="seccion" style="display: none;">
+        <h2>RECURSO</h2>
+        <h3><strong>Datos recurso</strong></h3>
+        <label for="rec_categoria">Categoría: </label>
+        <select id="rec_categoria"> 
+            <option value="0">Todas</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <label for="rec_modelo">Modelo: </label>
+        <select id="rec_modelo"> 
+            <option value="0">Todos</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <div>Núm. Serie:<input id="rec_num_serie" /></div>
+        <label for="rec_ubicacion">Ubicación: </label>
+        <select id="rec_ubicacion">
+            <option value="0">Todas</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <label for="rec_estado">Estado: </label>
+        <select id="rec_estado">
+            <option value="-1">Todos</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <button onclick="añadirRecurso()">Guardar</button>
+        <div align="right">
+            <button onclick="cambiarSeccion('home')">Volver al listado</button>
+        </div>
+    </div>
+
+    <div id="actualizarRecurso" class="seccion" style="display: none;">
+        <h2>RECURSO</h2>
+        <h3><strong>Datos recurso</strong></h3>
+        <label for="añadir_categoria">Categoría: </label>
+        <select id="añadir_categoria"> 
+            <option value="0">Todas</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <label for="añadir_modelo">Modelo: </label>
+        <select id="añadir_modelo"> 
+            <option value="0">Todos</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <div>Núm. Serie:<input id="añadir_num_serie" /></div>
+        <label for="añadir_ubicacion">Ubicación: </label>
+        <select id="añadir_ubicacion">
+            <option value="0">Todas</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <label for="añadir_estado">Estado: </label>
+        <select id="añadir_estado">
+            <option value="-1">Todos</option>
+            <!-- el resto de opciones se cargan desde la base de datos (cargarListados en main.js) -->
+        </select>
+        <br>
+        <button onclick="actualizarRecurso()">Guardar</button>
+
+        <h3><strong>Reservas</strong></h3>
+        <table border="1" cellpadding="6">
+            <thead>
+                <tr>
+                    <th>Sanitario</th>
+                    <th>H. estim.</th>
+                    <th>F. Petición</th>
+                    <th>F. Inicio</th>
+                    <th>F. Fin</th>
+                </tr>
+            </thead>
+            <tbody id="tabla_reservas_body"></tbody>
+        </table>
+
+        <h3><strong>Reseñas</strong></h3>
+        <table border="1" cellpadding="6">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Sanitario</th>
+                    <th>Valoración</th>
+                    <th>Comentario</th>
+                </tr>
+            </thead>
+            <tbody id="tabla_resenas_body"></tbody>
+        </table>
+        <div align="right">
+            <button onclick="cambiarSeccion('home')">Volver al listado</button>
+        </div>
+    </div>
+
+    <script src="rest.js"></script>
+    <script src="main.js"></script>
+
+</body>
+</html>

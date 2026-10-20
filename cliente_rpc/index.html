@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.6;
+    padding: 40px 20px;
+}
+
+h1 {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: #0f172a;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #334155;
+}
+
+.seccion {
+    max-width: 900px;
+    margin: 0 auto 20px auto;
+    background: var(--bg-card);
+    padding: 32px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease;
+}
+
+input, select {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    display: block;
+    margin-top: 5px;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+td button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    margin-top: 0;
+}
+
+td button:hover {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+th {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: #fff;
+    font-size: 0.9rem;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.boton-derecha {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #475569;
+    margin-bottom: 4px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+    </style>
+</head>
+<body onload="cargar()">
+
+    <h1>Aplicación Sanitario</h1>
+
+    <div id="acceso" class="seccion" style="display: block;">
+        <h2>ACCESO</h2>
+        <div>Usuario:<input id="acceso_usuario"></div>
+        <div>Contraseña:<input id="acceso_contraseña" type="password"></div>
+        <button onclick="login()">Entrar</button>
+        <button onclick="cambiarSeccion('registro')">Registrarse</button>
+    </div>
+
+    <div id="registro" class="seccion" style="display: none;">
+        <h2>DATOS SANITARIO</h2>
+        <div>Nombre:<input id="registro_nombre"></div>
+        <div>Apellidos:<input id="registro_apellidos"></div>
+        <div>Usuario:<input id="registro_usuario"></div>
+        <div>Contraseña:<input id="registro_contraseña" type="password"></div>
+        <button onclick="registro()">Guardar</button>
+        <button onclick="cambiarSeccion('acceso')">Cancelar</button>
+    </div>
+
+    <div id="home" class="seccion" style="display: none;">
+        <h2>INICIO</h2>
+        <p>
+            <span id="bienvenida"></span>
+            <button onclick="abrirEditar()">Editar datos</button>
+        </p>
+        <h3><strong>Reservas pendientes</strong></h3>
+        <table cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>Modelo</th>
+                    <th>N. Serie</th>
+                    <th>Ubicación</th>
+                    <th>F. Pet.</th>
+                    <th>H. Rest.</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tbody_pendientes"></tbody>
+        </table>
+
+        <h3 style="margin-top: 24px;"><strong>Reservas realizadas</strong></h3>
+        <table cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>Modelo</th>
+                    <th>N. Serie</th>
+                    <th>H.E</th>
+                    <th>F. Ini</th>
+                    <th>F. Fin</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tbody_realizadas"></tbody>
+        </table>
+
+        <button onclick="abrirNuevaReserva()">Nueva reserva</button>
+
+        <div class="boton-derecha">
+            <button onclick="contarReservas()">Reservas pendientes</button>
+        </div>
+
+        <h3 style="margin-top: 24px;"><strong>Avisos</strong></h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Origen</th>
+                    <th>Texto</th>
+                </tr>
+            </thead>
+            <tbody id="tbody_avisos"></tbody>
+        </table>
+
+        <div class="boton-derecha">
+            <button onclick="salir()">Salir</button>
+        </div>
+    </div>
+
+    <div id="actualizar" class="seccion" style="display: none;">
+        <h2>DATOS SANITARIO</h2>
+        <div>Nombre:<input id="editar_nombre"></div>
+        <div>Apellidos:<input id="editar_apellidos"></div>
+        <div>Usuario:<input id="editar_usuario"></div>
+        <div>Contraseña:<input id="editar_contraseña" type="password"></div>
+        <button onclick="actualizarSanitario()">Guardar</button>
+        <button onclick="cambiarSeccion('home')">Cancelar</button>
+    </div>
+
+    <div id="nueva_reserva" class="seccion" style="display: none;">
+        <h2>NUEVA RESERVA</h2>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <label style="margin: 0; white-space: nowrap;">Categoría:</label>
+            <select id="categoria_nueva" onchange="filtrarModelos()">
+                <!-- las opciones se cargan desde la base de datos (cargar en main.js) -->
+            </select>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+            <label style="margin: 0; white-space: nowrap;">Modelo:</label>
+            <select id="modelo_nuevo" onchange="mostrarRecursosDisponibles()"></select>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+            <label style="margin: 0; white-space: nowrap;">T. est. uso:</label>
+            <input type="number" id="horas_estimadas_nueva" style="max-width: 80px;" min="1">
+        </div>
+        <table style="margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th>N. Serie</th>
+                    <th>Ubicación</th>
+                    <th>H. Rest.</th>
+                    <th>Valoración</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="tbody_recursos"></tbody>
+        </table>
+        <div class="boton-derecha">
+            <button onclick="cambiarSeccion('home')">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="mensaje_nuevo" class="seccion" style="display: none;">
+        <h2>RESEÑA NUEVA</h2>
+        <div>Recurso: <span id="recurso_resenya"></span></div>
+        <label style="margin-top: 10px; white-space: nowrap;">Valoración:</label>
+        <select id="valoracion_resenya_nueva" style="max-width: 100px;">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <label style="margin-top: 10px;">Texto:</label>
+        <input id="texto_resenya_nueva">
+        <button onclick="nuevaResenya()">Guardar</button>
+        <button onclick="cambiarSeccion('home')">Cancelar</button>
+    </div>
+
+    <script src="rest.js"></script>
+    <script src="rpc.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
