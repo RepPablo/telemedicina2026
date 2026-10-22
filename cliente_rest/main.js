@@ -542,10 +542,6 @@ function cargarRanking() {
 
 function obtenerReservasArea(){
     var area = Number(document.getElementById("area_consulta").value);
-    if (!area || area < 1 || area > AREAS_MEDICAS.length) {
-        alert("Introduce un área médica válida (1-" + AREAS_MEDICAS.length + ").");
-        return;
-    }
 
     var reservas = 0;
     for (var i=0; i<enviosMinisterio.length; i++){
