@@ -551,7 +551,7 @@ function obtenerReservasArea(){
             reservas ++
         
         }
-        alert ("Existen " + reservas + "reservas del área de " + getNombreArea(area));
+        alert ("Existen " + reservas + "reservas del área de " + getNombreArea(Number(area)));
     });
 } 
 
