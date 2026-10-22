@@ -574,6 +574,6 @@ function obtenerPorcentaje(){
             }
         }
         var porcentaje = (finalizadas/reservas)*100;
-        alert ("El porcentaje de reservas finalizadas del área de " + getNombreArea(area) + " es: " + porcentaje.toFixed(1) + "%");
+        alert ("De las reservas del area de  " + getNombreArea(area) + " el " + porcentaje.toFixed(1) + "% están finalizadas.");
     });
 }
