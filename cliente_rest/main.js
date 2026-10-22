@@ -555,3 +555,25 @@ function obtenerReservasArea(){
     });
 } 
 
+
+function obtenerPorcentaje(){
+    var area = 9;
+    rest.get(URL_MINISTERIO, function (estado, respuesta){
+        if (respuesta != 200){
+            alert("No se ha podido conectar con la base de datos del ministerio");
+            return;
+        }
+
+        var reservas = 0;
+        var finalizadas = 0;
+        for (var i=0; i<respuesta.length; i++){
+            if (!respuesta[i] || respuesta[i].id_area != area) continue;
+            reservas ++;
+            for (var j=0; j<respuesta[i].datos.length; j++){
+                if (respuesta[i].datos[j].fecha_fin) finalizadas++;
+            }
+        }
+        var porcentaje = (finalizadas/reservas)*100;
+        alert ("El porcentaje de reservas finalizadas del área de " + getNombreArea(area) + " es: " + porcentaje.toFixed(1) + "%");
+    });
+}
