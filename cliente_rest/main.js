@@ -424,6 +424,8 @@ var URL_MINISTERIO = "https://undefined.ua.es/telemedicina/api/datos";
 
 var ID_AREA = 3;
 
+var enviosMinisterio = [];
+
 var AREAS_MEDICAS = [
     { id: 1, nombre: "Alergología" },
     { id: 2, nombre: "Anestesiología" },
@@ -507,6 +509,7 @@ function cargarRanking() {
             tbody.innerHTML = "<tr><td colspan='3'>No se ha podido consultar el Ministerio.</td></tr>";
             return;
         }
+        enviosMinisterio = envios;
 
         var totales = {};
         for (var i = 0; i < envios.length; i++) {
@@ -537,43 +540,45 @@ function cargarRanking() {
     });
 }
 
-function obtenerReservasArea(){
-    var area = (document.getElementById("area_gestor").value);
-    rest.get(URL_MINISTERIO, function (estado, respuesta){
-        if (estado != 200){
-            alert("No se ha podido conectar con la base de datos del ministerio");
-            return;
-        }
+function leerAreaConsulta() {
+    var area = Number(document.getElementById("area_consulta").value);
+    if (!area || area < 1 || area > AREAS_MEDICAS.length) {
+        alert("Introduce un área médica válida (1-" + AREAS_MEDICAS.length + ").");
+        return null;
+    }
+    return area;
+}
 
-        var reservas = 0;
-        for (var i=0; i<respuesta.length; i++){
-            if (!respuesta[i] || respuesta[i].id_area != area) continue;
-            reservas ++
-        
-        }
-        alert ("Existen " + reservas + "reservas del área de " + getNombreArea(Number(area)));
-    });
-} 
+function obtenerReservasArea(){
+    var area = leerAreaConsulta();
+    if (area == null) return;
+
+    var reservas = 0;
+    for (var i=0; i<enviosMinisterio.length; i++){
+        if (!enviosMinisterio[i] || enviosMinisterio[i].id_area != area || !enviosMinisterio[i].datos) continue;
+        reservas += enviosMinisterio[i].datos.length;
+    }
+    alert("Existen " + reservas + " reservas del área de " + getNombreArea(area));
+}
 
 
 function obtenerPorcentaje(){
-    var area = 9;
-    rest.get(URL_MINISTERIO, function (estado, respuesta){
-        if (estado != 200){
-            alert("No se ha podido conectar con la base de datos del ministerio");
-            return;
-        }
+    var area = leerAreaConsulta();
+    if (area == null) return;
 
-        var reservas = 0;
-        var finalizadas = 0;
-        for (var i=0; i<respuesta.length; i++){
-            if (!respuesta[i] || respuesta[i].id_area != area) continue;
-            reservas ++;
-            for (var j=0; j<respuesta[i].datos.length; j++){
-                if (respuesta[i].datos[j].fecha_fin) finalizadas++;
-            }
+    var reservas = 0;
+    var finalizadas = 0;
+    for (var i=0; i<enviosMinisterio.length; i++){
+        if (!enviosMinisterio[i] || enviosMinisterio[i].id_area != area || !enviosMinisterio[i].datos) continue;
+        for (var j=0; j<enviosMinisterio[i].datos.length; j++){
+            reservas++;
+            if (enviosMinisterio[i].datos[j].fecha_fin) finalizadas++;
         }
-        var porcentaje = (finalizadas/reservas)*100;
-        alert ("De las reservas del area de  " + getNombreArea(area) + " el " + porcentaje.toFixed(1) + "% están finalizadas.");
-    });
+    }
+    if (reservas == 0) {
+        alert("No hay reservas del área de " + getNombreArea(area));
+        return;
+    }
+    var porcentaje = (finalizadas/reservas)*100;
+    alert("De las " + reservas + " reservas del área de " + getNombreArea(area) + " el " + porcentaje.toFixed(1) + "% están finalizadas.");
 }
