@@ -536,3 +536,22 @@ function cargarRanking() {
         }
     });
 }
+
+function obtenerReservasArea(){
+    var area = Number(document.getElementById("id_area").value);
+    rest.get(URL_MINISTERIO, function (estado, respuesta){
+        if (respuesta != 200){
+            alert("No se ha podido conectar con la base de datos del ministerio");
+            return;
+        }
+
+        var reservas = 0;
+        for (var i=0; i<respuesta.length; i++){
+            if (!respuesta[i] || respuesta[i].id_area != area) continue;
+            reservas ++
+        
+        }
+        alert ("Existen " + reservas + "reservas del área de " + getNombreArea(area));
+    });
+} 
+
