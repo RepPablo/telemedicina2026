@@ -540,7 +540,7 @@ function cargarRanking() {
 function obtenerReservasArea(){
     var area = Number(document.getElementById("area_gestor").value);
     rest.get(URL_MINISTERIO, function (estado, respuesta){
-        if (respuesta != 200){
+        if (estado != 200){
             alert("No se ha podido conectar con la base de datos del ministerio");
             return;
         }
@@ -559,7 +559,7 @@ function obtenerReservasArea(){
 function obtenerPorcentaje(){
     var area = 9;
     rest.get(URL_MINISTERIO, function (estado, respuesta){
-        if (respuesta != 200){
+        if (estado != 200){
             alert("No se ha podido conectar con la base de datos del ministerio");
             return;
         }
