@@ -540,3 +540,34 @@ function cargarRanking() {
     });
 }
 
+function obtenerReservasArea(){
+    var area = Number(document.getElementById("area_consulta").value);
+
+    var reservas = 0;
+    for (var i=0; i<enviosMinisterio.length; i++){
+        if (!enviosMinisterio[i] || enviosMinisterio[i].id_area != area || !enviosMinisterio[i].datos) continue;
+        reservas += enviosMinisterio[i].datos.length;
+    }
+    alert("Existen " + reservas + " reservas del área de " + getNombreArea(area));
+}
+
+
+function obtenerPorcentaje(){
+    var area = Number(document.getElementById("area_consulta").value);
+
+    var reservas = 0;
+    var finalizadas = 0;
+    for (var i=0; i<enviosMinisterio.length; i++){
+        if (!enviosMinisterio[i] || enviosMinisterio[i].id_area != area || !enviosMinisterio[i].datos) continue;
+        for (var j=0; j<enviosMinisterio[i].datos.length; j++){
+            reservas++;
+            if (enviosMinisterio[i].datos[j].fecha_fin) finalizadas++;
+        }
+    }
+    if (reservas == 0) {
+        alert("No hay reservas del área de " + getNombreArea(area));
+        return;
+    }
+    var porcentaje = (finalizadas/reservas)*100;
+    alert("De las  reservas del área de " + getNombreArea(area) + " ,el " + porcentaje.toFixed(1) + "% están finalizadas.");
+}
