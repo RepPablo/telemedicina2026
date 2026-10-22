@@ -538,7 +538,7 @@ function cargarRanking() {
 }
 
 function obtenerReservasArea(){
-    var area = Number(document.getElementById("area_gestor").value);
+    var area = (document.getElementById("area_gestor").value);
     rest.get(URL_MINISTERIO, function (estado, respuesta){
         if (estado != 200){
             alert("No se ha podido conectar con la base de datos del ministerio");
