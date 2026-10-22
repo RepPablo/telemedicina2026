@@ -540,18 +540,12 @@ function cargarRanking() {
     });
 }
 
-function leerAreaConsulta() {
+function obtenerReservasArea(){
     var area = Number(document.getElementById("area_consulta").value);
     if (!area || area < 1 || area > AREAS_MEDICAS.length) {
         alert("Introduce un área médica válida (1-" + AREAS_MEDICAS.length + ").");
-        return null;
+        return;
     }
-    return area;
-}
-
-function obtenerReservasArea(){
-    var area = leerAreaConsulta();
-    if (area == null) return;
 
     var reservas = 0;
     for (var i=0; i<enviosMinisterio.length; i++){
@@ -563,8 +557,11 @@ function obtenerReservasArea(){
 
 
 function obtenerPorcentaje(){
-    var area = leerAreaConsulta();
-    if (area == null) return;
+    var area = Number(document.getElementById("area_consulta").value);
+    if (!area || area < 1 || area > AREAS_MEDICAS.length) {
+        alert("Introduce un área médica válida (1-" + AREAS_MEDICAS.length + ").");
+        return;
+    }
 
     var reservas = 0;
     var finalizadas = 0;
@@ -580,5 +577,5 @@ function obtenerPorcentaje(){
         return;
     }
     var porcentaje = (finalizadas/reservas)*100;
-    alert("De las " + reservas + " reservas del área de " + getNombreArea(area) + " el " + porcentaje.toFixed(1) + "% están finalizadas.");
+    alert("De las  reservas del área de " + getNombreArea(area) + " ,el " + porcentaje.toFixed(1) + "% están finalizadas.");
 }
